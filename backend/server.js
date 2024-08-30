@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express'
 import StockRoutes from './routes/stockRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import WatchListRoute from './routes/watchListRoutes.js'
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import connectDB from './database/database.js';
@@ -20,6 +21,7 @@ app.use(session({
 
 app.use('/api/stocks', StockRoutes);
 app.use('/api/user', authRoutes);
+app.use('/api/watchlist', WatchListRoute);
 
 const port = process.env.PORT || 5000;
 app.listen(port, ()=>{
