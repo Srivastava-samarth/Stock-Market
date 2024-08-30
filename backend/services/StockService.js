@@ -25,19 +25,36 @@ export const getRealTimeStckData = async (symbol)=>{
 };
 
 //fetching historical stock
-export const getHistoricalStock = async (symbol)=>{
+export const getHistoricalStock = async (symbol) => {
     try {
-        const res = await axios.get(`${baseUrl}`,{
-            params:{
-                function:'TIME_SERIES_DAILY',
-                symbol:symbol,
-                apikey:apiKey
+        // Fetch data from Alpha Vantage API
+        const res = await axios.get(`${baseUrl}`, {
+            params: {
+                function: 'TIME_SERIES_DAILY',
+                symbol: symbol,
+                apikey: apiKey
             }
         });
-        return res.data;
+        console.log(res.data);
+
+        const timeSeries = res.data['Time Series (Daily)'];
+        if (!timeSeries) {
+            throw new Error('Invalid data format or API limit exceeded');
+        }
+
+        const historicalData = Object.keys(timeSeries).map(date => ({
+            time: date,
+            open: parseFloat(timeSeries[date]['1. open']),
+            high: parseFloat(timeSeries[date]['2. high']),
+            low: parseFloat(timeSeries[date]['3. low']),
+            close: parseFloat(timeSeries[date]['4. close']),
+            volume: parseFloat(timeSeries[date]['5. volume'])
+        }));
+
+        return historicalData;
     } catch (error) {
-        console.log(error);
-        throw(error);
+        console.error('Error fetching historical stock data:', error);
+        throw new Error('Failed to fetch historical stock data');
     }
 };
 
