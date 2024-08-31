@@ -27,7 +27,6 @@ export const getRealTimeStckData = async (symbol)=>{
 //fetching historical stock
 export const getHistoricalStock = async (symbol) => {
     try {
-        // Fetch data from Alpha Vantage API
         const res = await axios.get(`${baseUrl}`, {
             params: {
                 function: 'TIME_SERIES_DAILY',
@@ -35,7 +34,6 @@ export const getHistoricalStock = async (symbol) => {
                 apikey: apiKey
             }
         });
-        console.log(res.data);
 
         const timeSeries = res.data['Time Series (Daily)'];
         if (!timeSeries) {
