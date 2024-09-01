@@ -22,6 +22,7 @@ app.use(session({
 app.use('/api/stocks', StockRoutes);
 app.use('/api/user', authRoutes);
 app.use('/api/watchlist', WatchListRoute);
+app.use('/api/tradingview',)
 
 const port = process.env.PORT || 5000;
 app.listen(port, ()=>{
